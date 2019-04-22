@@ -9,26 +9,26 @@ import string
 all_letters = string.ascii_letters + " .,;'-" # Collection of ASCII characters
 n_letters = len(all_letters) + 1 # Add one for EOS marker
 
-def findFiles(path):
+def find_files(path):
     return glob.glob(path)
 
-def unicodeToAscii(s):
-    return ''.join(
-            c for c in unicodedata.normalize('NFD', s)
-            if unicodedata.category(c) != 'Mn'
-            and c in all_letters
-    )
+def unicode_to_ascii(s):
+    ascii = []
+
+    for c in unicodedata.normalize('NFD', s):
+        if unicodedata.category(c) != 'Mn' and c in all_letters:
+            ascii.append(c)
 
 # Read file, split into lines
-def readLines(filename):
+def read_lines(filename):
     lines = open(filename, encoding='utf-8').read().strip().split('\n')
-    return [unicodeToAscii(line) for line in lines]
+    return [unicode_to_ascii(line) for line in lines]
 
 # Build category_lines dictionary, a list of lines per category
 category_lines = {}
 all_categories = []
 data_glob = 'data/names/*.txt'
-for filename in findFiles(data_glob):
+for filename in find_files(data_glob):
     category = os.path.splitext(os.path.basename(filename))[0]
     all_categories.append(category)
     lines = readLines(filename)
@@ -99,7 +99,7 @@ and the output consists of:
 # One-hot vector for category
 def category_tensor(category):
     li = all_categories.index(category)
-    tensor = torch.zeroes(1, n_categories)
+    tensor = torch.zeros(1, n_categories)
     tensor[0][li] = 1
 
     return tensor
@@ -179,6 +179,7 @@ total_loss = 0 # Reset every plot_every iters
 
 start = time.time()
 
+print('Training model...')
 for iter in range(1, n_iters + 1):
     output, loss = train(*random_training_example())
     total_loss += loss
@@ -186,6 +187,8 @@ for iter in range(1, n_iters + 1):
     if iter % print_every == 0:
         print('%s (%d %d%%) %.4f' % (timeSince(start), iter, iter / n_iters * 100, loss))
 
+### Save model after training
+torch.save(rnn, 'language_names.pt')
 
 ### Generating samples
 max_length = 50
