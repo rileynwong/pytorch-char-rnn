@@ -13,11 +13,11 @@ def find_files(path):
     return glob.glob(path)
 
 def unicode_to_ascii(s):
-    ascii = []
-
-    for c in unicodedata.normalize('NFD', s):
-        if unicodedata.category(c) != 'Mn' and c in all_letters:
-            ascii.append(c)
+    return ''.join(
+            c for c in unicodedata.normalize('NFD', s)
+            if unicodedata.category(c) != 'Mn'
+            and c in all_letters
+    )
 
 # Read file, split into lines
 def read_lines(filename):
@@ -27,11 +27,12 @@ def read_lines(filename):
 # Build category_lines dictionary, a list of lines per category
 category_lines = {}
 all_categories = []
+
 data_glob = 'data/names/*.txt'
 for filename in find_files(data_glob):
     category = os.path.splitext(os.path.basename(filename))[0]
     all_categories.append(category)
-    lines = readLines(filename)
+    lines = read_lines(filename)
     category_lines[category] = lines
 
 n_categories = len(all_categories)
@@ -63,11 +64,11 @@ class RNN(nn.Module):
     def forward(self, category, inputs, hidden):
         input_combined = torch.cat((category, inputs, hidden), 1)
         hidden = self.i2h(input_combined)
-        i2o = self.i2o(input_combined)
-        output_combined = torch.cat((hidden, i2o), 1)
-        o2o = self.o2o(output_combined)
-        dropout = self.dropout(o2o)
-        output = self.softmax(dropout)
+        output = self.i2o(input_combined)
+        output_combined = torch.cat((hidden, output), 1)
+        output = self.o2o(output_combined)
+        output = self.dropout(output)
+        output = self.softmax(output)
 
         return output, hidden
 
@@ -212,6 +213,7 @@ def sample(category, start_letter='A'):
             else: # Else, append next letter to output
                 letter = all_letters[top_i]
                 output_name += letter
+            sample_input = input_tensor(letter)
 
         return output_name
 
