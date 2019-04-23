@@ -28,7 +28,7 @@ def read_lines(filename):
 category_lines = {}
 all_categories = []
 
-data_glob = 'constellations_data/*.txt'
+data_glob = '/data/constellations/*.txt'
 for filename in find_files(data_glob):
     category = os.path.splitext(os.path.basename(filename))[0]
     all_categories.append(category)
