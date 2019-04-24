@@ -22,13 +22,15 @@ def unicode_to_ascii(s):
 # Read file, split into lines
 def read_lines(filename):
     lines = open(filename, encoding='utf-8').read().strip().split('\n')
-    return [unicode_to_ascii(line) for line in lines]
+    ascii_lines = [unicode_to_ascii(line) for line in lines if unicode_to_ascii(line)] # Exclude empty lines
+
+    return ascii_lines
 
 # Build category_lines dictionary, a list of lines per category
 category_lines = {}
 all_categories = []
 
-data_glob = 'data/names/*.txt'
+data_glob = 'data/books/*.txt'
 for filename in find_files(data_glob):
     category = os.path.splitext(os.path.basename(filename))[0]
     all_categories.append(category)
@@ -134,7 +136,6 @@ def random_training_example():
 
 ### Training the network
 criterion = nn.NLLLoss() # Negative log likelihood loss
-# TODO: replace w MSELoss for single category ?
 
 learning_rate = 0.0005
 
@@ -170,7 +171,8 @@ def timeSince(since):
     return '%dm %ds' % (m, s)
 
 ### Training
-rnn = RNN(n_letters, 128, n_letters)
+# rnn = RNN(n_letters, 128, n_letters)
+rnn = torch.load('models/book_titles.pt')
 
 n_iters = 100000
 print_every = 5000
@@ -180,16 +182,16 @@ total_loss = 0 # Reset every plot_every iters
 
 start = time.time()
 
-print('Training model...')
-for iter in range(1, n_iters + 1):
-    output, loss = train(*random_training_example())
-    total_loss += loss
-
-    if iter % print_every == 0:
-        print('%s (%d %d%%) %.4f' % (timeSince(start), iter, iter / n_iters * 100, loss))
-
+# print('Training model...')
+# for iter in range(1, n_iters + 1):
+#     output, loss = train(*random_training_example())
+#     total_loss += loss
+#
+#     if iter % print_every == 0:
+#         print('%s (%d %d%%) %.4f' % (timeSince(start), iter, iter / n_iters * 100, loss))
+#
 ### Save model after training
-torch.save(rnn, 'language_names.pt')
+# torch.save(rnn, 'models/book_titles.pt')
 
 ### Generating samples
 max_length = 50
@@ -213,6 +215,7 @@ def sample(category, start_letter='A'):
             else: # Else, append next letter to output
                 letter = all_letters[top_i]
                 output_name += letter
+
             sample_input = input_tensor(letter)
 
         return output_name
@@ -222,11 +225,79 @@ def samples(category, start_letters='ABC'):
     for start_letter in start_letters:
         print(sample(category, start_letter))
 
+print()
+print('Romance:')
+samples('Romance', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
 
-samples('Russian', 'RUS')
+print()
+print('Fantasy:')
+samples('Fantasy', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
 
-samples('German', 'GER')
+print()
+print('Young_Adult:')
+samples('Young_Adult', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
 
-samples('Spanish', 'SPA')
+print()
+print('Fiction:')
+samples('Fiction', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
 
-samples('Chinese', 'CHI')
+print()
+print('Historical:')
+samples('Historical', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+# print()
+# print('Nonfiction:')
+# samples('Nonfiction', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+print()
+print('Science_Fiction:')
+samples('Science_Fiction', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+print()
+print('Mystery:')
+samples('Mystery', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+print()
+print('Classics:')
+samples('Classics', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+print()
+print('Sequential_Art:')
+samples('Sequential_Art', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+print()
+print('Horror:')
+samples('Horror', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+print()
+print('Childrens:')
+samples('Childrens', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+# print()
+# print('History:')
+# samples('History', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+print()
+print('Paranormal:')
+samples('Paranormal', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+print()
+print('New_Adult:')
+samples('New_Adult', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+print()
+print('Poetry:')
+samples('Poetry', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+print()
+print('Erotica:')
+samples('Erotica', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+print()
+print('Novels:')
+samples('Novels', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+
+# print()
+# print('Biography:')
+# samples('Biography', 'ABDEFGHIJKLMNOPQRSTUVWXYZ')
+

@@ -170,8 +170,8 @@ def timeSince(since):
     return '%dm %ds' % (m, s)
 
 ### Training
-rnn = RNN(n_letters, 128, n_letters)
-# rnn = torch.load('constellation_names.pt')
+# rnn = RNN(n_letters, 128, n_letters)
+rnn = torch.load('models/constellation_names.pt')
 
 n_iters = 100000
 print_every = 5000
@@ -181,16 +181,16 @@ total_loss = 0 # Reset every plot_every iters
 
 start = time.time()
 
-print('Training model...')
-for iter in range(1, n_iters + 1):
-    output, loss = train(*random_training_example())
-    total_loss += loss
-
-    if iter % print_every == 0:
-        print('%s (%d %d%%) %.4f' % (timeSince(start), iter, iter / n_iters * 100, loss))
-
-### Save model after training
-torch.save(rnn, 'constellation_names.pt')
+# print('Training model...')
+# for iter in range(1, n_iters + 1):
+#     output, loss = train(*random_training_example())
+#     total_loss += loss
+#
+#     if iter % print_every == 0:
+#         print('%s (%d %d%%) %.4f' % (timeSince(start), iter, iter / n_iters * 100, loss))
+#
+# ### Save model after training
+# torch.save(rnn, 'constellation_names.pt')
 
 ### Generating samples
 max_length = 50
@@ -223,7 +223,10 @@ def samples(category, start_letters='ABC'):
     for start_letter in start_letters:
         print(sample(category, start_letter))
 
-
+print('English: ')
 samples('english', 'abcdefghijklmnopqrstuvwxyz')
+print()
 
+print('Latin: ')
 samples('latin', 'abcdefghijklmnopqrstuvwxyz')
+print()
