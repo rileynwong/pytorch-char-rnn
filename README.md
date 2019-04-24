@@ -8,12 +8,57 @@ Includes pretrained models for generating:
 
 ## Examples
 ### Book titles
+
 ```
-tk
+Heart in the Dark (Romance)
+
+Book of the Dark (Fantasy) 
+
+Bed Store (Young Adult)
+
+Growing Me (New Adult)
+Me the Bean (New Adult) 
+
+King of the Dark (Erotica)
+Your Mind (Erotica)
+
+Red Story (Mystery) 
+
+Be the Life (Biography)
 ```
+
 ### First names
+Russian:
 ```
-tk
+Rovakov
+Uanten
+Shantovov
+```
+
+Chinese:
+```
+Chan
+Hang
+Iun
+```
+
+### Constellations
+English:
+```
+orogane
+quale
+rowans
+serpent
+kelescop
+```
+
+Latin:
+```
+bearis
+corac
+serpens
+xer
+zeriscase
 ```
 
 ## File Overview
