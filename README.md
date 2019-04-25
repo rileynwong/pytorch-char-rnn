@@ -1,5 +1,5 @@
 # PyTorch Char-RNN
-PyTorch implementation of a character-level recurrent neural network. See accompanying blog post.
+PyTorch implementation of a character-level recurrent neural network. See [accompanying blog post](https://www.rileynwong.com/blog/2019/4/24/implementing-char-rnn-from-scratch-in-pytorch-and-generating-fake-book-titles).
 
 Includes pretrained models for generating:
 - fake book titles in different genres
