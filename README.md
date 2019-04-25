@@ -8,6 +8,7 @@ Includes pretrained models for generating:
 
 ## Examples
 ### Book titles
+Possible categories in the pretrained model include: `Adult_Fiction, Erotica, Mystery, Romance, Autobiography, Fantasy, New_Adult, Science_Fiction, Biography, Fiction, Nonfiction, Sequential_Art, Childrens, Historical, Novels, Short_Stories, Christian_Fiction, History, Paranormal, Thriller, Classics, Horror, Philosophy, Young_Adult, Contemporary, Humor, Poetry, Dark, Lgbt, Religion`
 
 ```
 Heart in the Dark (Romance)
@@ -28,6 +29,8 @@ Be the Life (Biography)
 ```
 
 ### First names
+Possible categories in the pretrained model include: `Arabic, Chinese, Czech, Dutch, English, French, German, Greek, Irish, Italian, Japanese, Korean, Polish, Portuguese, Russian, Scottish, Spanish, Vietnamese`
+
 Russian:
 ```
 Rovakov
